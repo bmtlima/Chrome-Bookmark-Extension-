@@ -4,8 +4,41 @@ $(function() {
     $('#search').change(function() {
        $('#bookmarks').empty();
        dumpBookmarks($('#search').val());
+       console.log($('#search').val());
     });
   });
+
+var page;
+
+  $(function() {
+    $('#pageadd').change(function() {
+    page = $('#pageadd').val();
+    console.log(page);
+    });
+});
+
+var el = document.getElementById("mybutton");
+if(el){
+    el.addEventListener("click", myFunction);
+}
+
+function myFunction(){
+  console.log('asd');
+  document.getElementById("p").style.display = "none";
+}
+
+const crypto = require("crypto");
+crypto.randomBytes(16).toString("base64");
+
+  $( "form" ).submit(function( event ) {
+    if ( $( "input" ).first().val() === "correct" ) {
+      console.log('hi');
+    }
+   
+    $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
+    event.preventDefault();
+  });
+    
 
   // Traverse the bookmark tree, and print the folder and nodes.
   function dumpBookmarks(query) {
