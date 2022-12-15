@@ -8,7 +8,7 @@ $(function() {
     });
   });
 
-var page;
+/*var page;
 
   $(function() {
     $('#pageadd').change(function() {
@@ -17,19 +17,6 @@ var page;
     });
 });
 
-var el = document.getElementById("mybutton");
-if(el){
-    el.addEventListener("click", myFunction);
-}
-
-function myFunction(){
-  console.log('asd');
-  document.getElementById("p").style.display = "none";
-}
-
-const crypto = require("crypto");
-crypto.randomBytes(16).toString("base64");
-
   $( "form" ).submit(function( event ) {
     if ( $( "input" ).first().val() === "correct" ) {
       console.log('hi');
@@ -37,7 +24,7 @@ crypto.randomBytes(16).toString("base64");
    
     $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
     event.preventDefault();
-  });
+  });*/
     
 
   // Traverse the bookmark tree, and print the folder and nodes.
