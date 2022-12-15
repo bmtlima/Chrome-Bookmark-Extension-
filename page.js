@@ -1,23 +1,18 @@
-var el = document.getElementById("mybutton");
-if(el){
-    el.addEventListener("click", myFunction);
-}
+// Making confirmation sign invisible
+var x = document.getElementById("confirmation");
+x.style.display = "none";
 
+// Retrieving the page number inserted by the user
 var el = document.getElementById("pgbutton");
 if(el){
     el.addEventListener("click", update);
 }
 
-function myFunction(){
-    console.log('asd');
-}
-
 var page;
+var book;
 
 function update(){
-    console.log('worked!');
+    x.style.display = "block";
     page = $('#pgnumber').val();
-    console.log(page);
+    book = $('#bkname').val();
 }
-
-

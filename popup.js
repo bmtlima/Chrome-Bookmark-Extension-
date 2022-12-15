@@ -1,13 +1,3 @@
-
-// Search the bookmarks when entering the search keyword.
-$(function() {
-    $('#search').change(function() {
-       $('#bookmarks').empty();
-       dumpBookmarks($('#search').val());
-       console.log($('#search').val());
-    });
-  });
-
 /*var page;
 
   $(function() {
@@ -25,16 +15,6 @@ $(function() {
     $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
     event.preventDefault();
   });*/
-    
-
-  // Traverse the bookmark tree, and print the folder and nodes.
-  function dumpBookmarks(query) {
-    var bookmarkTreeNodes = chrome.bookmarks.getTree(
-      function(bookmarkTreeNodes) {
-        $('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
-      });
-    
-  }
 
   /*function dumpBookmarks(query) {
     chrome.bookmarks.getTree(function(itemTree){
@@ -55,6 +35,25 @@ $(function() {
     if(node.url) { console.log(node.url); }
     //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
 }*/
+
+// Search the bookmarks when entering the search keyword.
+$(function() {
+    $('#search').change(function() {
+       $('#bookmarks').empty();
+       dumpBookmarks($('#search').val());
+       console.log($('#search').val());
+    });
+  });
+    
+
+  // Traverse the bookmark tree, and print the folder and nodes.
+  function dumpBookmarks(query) {
+    var bookmarkTreeNodes = chrome.bookmarks.getTree(
+      function(bookmarkTreeNodes) {
+        $('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
+      });
+    
+  }
 
   function dumpTreeNodes(bookmarkNodes, query) {
     console.log(bookmarkNodes);
@@ -123,14 +122,13 @@ $(function() {
            });
 
 
-
           $('#addlink').click(function() {
             $('#adddialog').empty().append(edit).dialog({autoOpen: false,
               closeOnEscape: true, title: 'Add New Bookmark', modal: true,
               buttons: {
               'Add' : function() {
                  chrome.bookmarks.create({parentId: bookmarkNode.id,
-                   title: $('#title').val(), url: $('#url').val()});
+                   title: 'Book: ' + $('#title').val(), url: $('#url').val()});
                  $('#bookmarks').empty();
                  $(this).dialog('destroy');
                  window.dumpBookmarks();
@@ -173,10 +171,12 @@ $(function() {
     if (bookmarkNode.children && bookmarkNode.children.length > 0) {
       li.append(dumpTreeNodes(bookmarkNode.children, query));
     }
-    
+
+    return li;
+
     //console.log(li[0].innerHTML);
 
-    const text = "style = 'display: none;'";
+    /*const text = "style = 'display: none;'";
     let inicio = li[0].innerHTML.substring(0,9);
     let fim = li[0].innerHTML.substring(8);
 
@@ -190,7 +190,7 @@ $(function() {
     }
     else {
         return $('<span></span>');
-    }
+    }*/
   }
   
   document.addEventListener('DOMContentLoaded', function () {
