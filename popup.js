@@ -125,10 +125,12 @@ $(function() {
         chrome.tabs.create({url: bookmarkNode.url});
       });
       var span = $('<span>');
-      var options = bookmarkNode.children ?
+      /*var options = bookmarkNode.children ?
         $('<span>[<a href="#" id="addlink">Add</a>]</span>') :
         $('<span>[<a id="deletelink" ' +
-          'href="#">Delete</a>]</span>');
+          'href="#">Delete</a>]</span>');*/
+      var options = $('<span>[<a id="deletelink" ' +
+      'href="#">Delete</a>]</span>');
       var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
         '<input id="title"></td></tr><tr><td>URL</td><td><input id="url">' +
         '</td></tr></table>') : $('<input>');

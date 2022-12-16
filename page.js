@@ -30,11 +30,14 @@
 var idOne;
 var page = 0;
 var bookId;
+var bool = false;
 var book;
 var taba;
 var url;
 
+
 function dBookmarks() {
+    console.log("book: " + book);
     chrome.bookmarks.getTree(function(itemTree){
         itemTree.forEach(function(item){
             pNode(item);
@@ -51,7 +54,10 @@ function pNode(node) {
                     idOne = child.id;
                     //console.log("main: " + main);
                 }
-                else if (child.title === book){
+                console.log('child.title: ' + child.title + ' sohBook: ' + book);
+                if (child.title == book){
+                    bool = true;
+                    console.log('deu bom, aq ta o book: ' + book + ' e aq ta o child.id: ' + child.id);
                     bookId = child.id;
                     console.log(bookId);
                 }
@@ -63,12 +69,13 @@ function pNode(node) {
 
     // print leaf nodes URLs to console
     if(node.url) { 
-    //    console.log(node); 
+        console.log(node); 
     }
     //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
 }
 
-dBookmarks();
+dBookmarks("");
+
 
 // Making confirmation sign invisible
 var x = document.getElementById("confirmation");
@@ -90,6 +97,7 @@ function update(){
     x.style.display = "block";
     page = $('#pgnumber').val();
     book = $('#bkname').val();
+    //dBookmarks();
 }
 
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -98,11 +106,14 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 });
 
 
+
 $('#pgbutton').click(function() {
 
     console.log('vai q');
     var link = null;
-    dBookmarks(book);
+    console.log('antes');
+    console.log('depois');
+    console.log(bookId);
     if (page > 0){
         link = 'javascript:(  function() %7B   window.open(%27' + taba.url + '%23page%3D' + page + '%27)%3B   %7D  )()';
     }
@@ -124,12 +135,11 @@ $('#pgbutton').click(function() {
             link = 'javascript:(  function() %7B   window.open(%27' + taba.url + '%23page%3D' + page + '%27)%3B   %7D  )()';
         }
 
-        console.log(bookId);
-            chrome.bookmarks.create({
-                parentId: idOne,
-                title: book,
-                url: link
-            }, callback());
+        chrome.bookmarks.create({
+            parentId: idOne,
+            title: book,
+            url: link
+        }, callback());
 
     };
 
@@ -141,3 +151,8 @@ $('#pgbutton').click(function() {
     //window.location.reload();
   }
 
+  function callback2() {
+    
+  }
+
+console.log('last');
