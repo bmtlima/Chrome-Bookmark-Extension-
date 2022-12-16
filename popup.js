@@ -36,9 +36,8 @@
     //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
 }*/
 
-var test = 101;
-
 // Search the bookmarks when entering the search keyword.
+
 $(function() {
     $('#search').change(function() {
        $('#bookmarks').empty();
@@ -47,6 +46,32 @@ $(function() {
     });
   });
     
+//TESTE 
+
+/*
+  function dumpBookmarks(query) {
+    chrome.bookmarks.getTree(function(itemTree){
+        itemTree.forEach(function(item){
+            processNode(item);
+        });
+    });
+  }
+
+  function processNode(node) {
+    // recursively process child nodes
+    if(node.children) {
+        node.children.forEach(function(child) { processNode(child); });
+        //$('#bookmarks').append(dumpTreeNodes(processNode(node.children.forEach()), query));
+    }
+
+    // print leaf nodes URLs to console
+    if(node.url) { console.log(node); }
+    //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
+}
+*/
+
+// FIM DO TESTE
+
 
   // Traverse the bookmark tree, and print the folder and nodes.
   function dumpBookmarks(query) {
@@ -57,13 +82,19 @@ $(function() {
     
   }
 
+  var dad;
+
   function dumpTreeNodes(bookmarkNodes, query) {
     //console.log(bookmarkNodes);
     var list = $('<ul>');
     var i;
     for (i = 0; i < bookmarkNodes.length; i++) {
         // console.log('esse eh o tamanho de bookmarkNodes ' + bookmarkNodes.length);
-        //console.log(bookmarkNodes[i].title);
+        //console.log(i + ' ' + bookmarkNodes[i].id);
+        /*if (bookmarkNodes[i].title === 'Bookmarks Bar' ){
+            dad = bookmarkNodes[i].id;
+            console.log(dad);
+        }*/
         list.append(dumpNode(bookmarkNodes[i], query));
     }
     //console.log(list);
@@ -71,6 +102,12 @@ $(function() {
   }
 
   function dumpNode(bookmarkNode, query) {
+    /*console.log(bookmarkNode);
+    if (bookmarkNode.title === "Bookmarks Bar"){
+        dad = bookmarkNode.id;
+        console.log('deu bom ' +  dad);
+        console.log(dad === 1);
+    }*/
     if (bookmarkNode.title) {
       if (query && !bookmarkNode.children) {
         if (String(bookmarkNode.title).indexOf(query) == -1) {
@@ -92,9 +129,9 @@ $(function() {
         $('<span>[<a href="#" id="addlink">Add</a>]</span>') :
         $('<span>[<a id="deletelink" ' +
           'href="#">Delete</a>]</span>');
-      /*var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
+      var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
         '<input id="title"></td></tr><tr><td>URL</td><td><input id="url">' +
-        '</td></tr></table>') : $('<input>');*/
+        '</td></tr></table>') : $('<input>');
       
         // Show add and edit links when hover over.
           span.hover(function() {
