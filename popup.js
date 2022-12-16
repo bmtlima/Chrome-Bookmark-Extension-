@@ -36,6 +36,8 @@
     //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
 }*/
 
+var test = 101;
+
 // Search the bookmarks when entering the search keyword.
 $(function() {
     $('#search').change(function() {
@@ -56,7 +58,7 @@ $(function() {
   }
 
   function dumpTreeNodes(bookmarkNodes, query) {
-    console.log(bookmarkNodes);
+    //console.log(bookmarkNodes);
     var list = $('<ul>');
     var i;
     for (i = 0; i < bookmarkNodes.length; i++) {
@@ -88,39 +90,20 @@ $(function() {
       var span = $('<span>');
       var options = bookmarkNode.children ?
         $('<span>[<a href="#" id="addlink">Add</a>]</span>') :
-        $('<span>[<a id="editlink" href="#">Edit</a> <a id="deletelink" ' +
+        $('<span>[<a id="deletelink" ' +
           'href="#">Delete</a>]</span>');
-      var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
+      /*var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
         '<input id="title"></td></tr><tr><td>URL</td><td><input id="url">' +
-        '</td></tr></table>') : $('<input>');
+        '</td></tr></table>') : $('<input>');*/
       
         // Show add and edit links when hover over.
           span.hover(function() {
           span.append(options);
           $('#deletelink').click(function() {
-            $('#deletedialog').empty().dialog({
-                   autoOpen: false,
-                   title: 'Confirm Deletion',
-                   resizable: false,
-                   height: 140,
-                   modal: true,
-                   overlay: {
-                     backgroundColor: '#000',
-                     opacity: 0.5
-                   },
-                   buttons: {
-                     'Yes, Delete It!': function() {
-                        chrome.bookmarks.remove(String(bookmarkNode.id));
-                        span.parent().remove();
-                        $(this).dialog('destroy');
-                      },
-                      Cancel: function() {
-                        $(this).dialog('destroy');
-                      }
-                   }
-                 }).dialog('open');
-           });
-
+            chrome.bookmarks.remove(String(bookmarkNode.id));
+            span.parent().remove();
+            $(this).dialog('destroy');
+          });
 
           $('#addlink').click(function() {
             $('#adddialog').empty().append(edit).dialog({autoOpen: false,
@@ -141,7 +124,7 @@ $(function() {
 
 
 
-          $('#editlink').click(function() {
+          /*$('#editlink').click(function() {
            edit.val(anchor.text());
            $('#editdialog').empty().append(edit).dialog({autoOpen: false,
              closeOnEscape: true, title: 'Edit Title', modal: true,
@@ -158,7 +141,7 @@ $(function() {
                    $(this).dialog('destroy');
                }
            }}).dialog('open');
-          });
+          });*/
           options.fadeIn();
         },
         // unhover
