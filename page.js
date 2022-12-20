@@ -34,32 +34,39 @@ var bool = false;
 var book;
 var taba;
 var url;
+var arr = [];
 
 
-function dBookmarks() {
+(function dBookmarks() {
     console.log("book: " + book);
     chrome.bookmarks.getTree(function(itemTree){
         itemTree.forEach(function(item){
             pNode(item);
         });
     });
-}
+})();
 
 function pNode(node) {
     // recursively process child nodes
+    if (arr.indexOf(node.title) == -1 && node.url == undefined){
+        arr.push(node.title);
+        arr.push(node.id);
+    }
     if(node.children) {
         node.children.forEach(
             function(child) {
                 if (child.title === "Bookmarks Bar"){
                     idOne = child.id;
-                    console.log("main: " + idOne);
+                    //console.log("main: " + idOne);
                 }
-                console.log('child.title: ' + child.title + ' sohBook: ' + book);
+                
+                //console.log('child.title: ' + child.title + ' sohBook: ' + book);
                 if (child.title == book){
                     bool = true;
-                    console.log('deu bom, aq ta o book: ' + book + ' e aq ta o child.id: ' + child.id);
+                    //console.log('deu bom, aq ta o book: ' + book + ' e aq ta o child.id: ' + child.id);
                     bookId = child.id;
-                    console.log(bookId);
+                    //console.log(bookId);
+                    console.log('ale');
                 }
                 pNode(child); 
             }
@@ -74,7 +81,40 @@ function pNode(node) {
     //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
 }
 
-dBookmarks("");
+console.log(arr);
+
+function dBookmarks2(bookname){
+    chrome.bookmarks.getTree(function(itemTree){
+        itemTree.forEach(function(item){
+            pNode2(item, bookname);
+        });
+    });
+}
+
+function pNode2(node, namebook){
+    // recursively process child nodes
+    if(node.children) {
+        node.children.forEach(
+            function(child) {
+                if (child.title === namebook){
+                    idOne = child.id;
+                    console.log("idOne: " + idOne);
+                }
+                if (child.title == book){
+                    bookId = child.id;
+                }
+                pNode2(child, namebook); 
+            }
+        );
+    }
+
+    // print leaf nodes URLs to console
+    if(node.url) { 
+
+    }
+}
+
+//dBookmarks();
 
 
 // Making confirmation sign invisible
@@ -120,6 +160,7 @@ function update(){
         });
     });
 */
+    /*
     function pNode2(node) {
         // recursively process child nodes
         if(node.children) {
@@ -145,6 +186,8 @@ function update(){
         //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
     }
 
+    */
+
     //TESTANDO
 }
 
@@ -169,19 +212,40 @@ $('#pgbutton').click(function() {
         link = 'javascript:(  function() %7B   window.open(%27' + taba.url + '%23page%3D' + page + '%27)%3B   %7D  )()';
     }
 
+    console.log('idOne before changing: ' + idOne);
+    console.log(arr);
+    console.log()
+    console.log('suposto valor do idOne: ' + arr[arr.indexOf(book) + 1]);
+
     function createTab(link) {
 
         console.log(book + ' book');
+        
         if (taba.url.includes('#page=')){
             let pos = taba.url.indexOf('#page=');
             taba.url = taba.url.substring(0, pos);
             link = 'javascript:(  function() %7B   window.open(%27' + taba.url + '%23page%3D' + page + '%27)%3B   %7D  )()';
         }
-        chrome.bookmarks.create({
+
+        if (arr.indexOf(book) != -1){
+            console.log('aaa');
+            idOne = arr[arr.indexOf(book) + 1];
+        }
+
+        if(page > 0){
+            chrome.bookmarks.create({
+                parentId: idOne,
+                title: 'Page ' + page,
+                url: link
+            }, callback());
+        }
+
+        else{
+            chrome.bookmarks.create({
             parentId: idOne,
             title: book,
             url: link
-        }, callback());
+        }, callback());}
     };
 
     createTab(link);
