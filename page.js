@@ -97,7 +97,42 @@ function update(){
     x.style.display = "block";
     page = $('#pgnumber').val();
     book = $('#bkname').val();
-    //dBookmarks();
+    
+    //TESTANDO
+
+    /*chrome.bookmarks.getTree(function(itemTree){
+        itemTree.forEach(function(item){
+            console.log(item);
+            //pNode2(item);
+        });
+    });
+*/
+    function pNode2(node) {
+        // recursively process child nodes
+        if(node.children) {
+            node.children.forEach(
+                function(child) {
+                    console.log('child.title: ' + child.title + ' sohBook: ' + book);
+                    if (child.title == book){
+                        bool = true;
+                        console.log('deu bom, aq ta o book: ' + book + ' e aq ta o child.id: ' + child.id);
+                        bookId = child.id;
+                        console.log(bookId);
+                    }
+                    pNode2(child); 
+                }
+            );
+            //$('#bookmarks').append(dumpTreeNodes(processNode(node.children.forEach()), query));
+        }
+    
+        // print leaf nodes URLs to console
+        if(node.url) { 
+            console.log(node); 
+        }
+        //$('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
+    }
+
+    //TESTANDO
 }
 
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -109,11 +144,13 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 
 $('#pgbutton').click(function() {
 
-    console.log('vai q');
-    var link = null;
-    console.log('antes');
-    console.log('depois');
-    console.log(bookId);
+    chrome.bookmarks.getTree(function(itemTree){
+        itemTree.forEach(function(item){
+            console.log(item);
+            //pNode2(item);
+            pqp();
+            function pqp(){
+                var link = null;
     if (page > 0){
         link = 'javascript:(  function() %7B   window.open(%27' + taba.url + '%23page%3D' + page + '%27)%3B   %7D  )()';
     }
@@ -134,16 +171,23 @@ $('#pgbutton').click(function() {
             taba.url = taba.url.substring(0, pos);
             link = 'javascript:(  function() %7B   window.open(%27' + taba.url + '%23page%3D' + page + '%27)%3B   %7D  )()';
         }
-
         chrome.bookmarks.create({
             parentId: idOne,
             title: book,
             url: link
         }, callback());
-
     };
 
     createTab(link);
+            }
+
+            
+
+        });
+
+        
+
+    }); 
     
   });
 
